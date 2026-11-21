@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DigiCreationTips</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Bengali:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 35px;
+      padding: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .nav-btn {
+      background: rgba(34, 211, 238, 0.08);
+      color: var(--accent-primary);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      scroll-margin-top: 24px;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn-group {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      flex: 1;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .open-btn {
+      background: var(--accent-primary);
+      color: #020617;
+      border: 1px solid var(--accent-primary);
+    }
+
+    .open-btn:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+      .btn-group { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>DigiCreationTips</h1>
+      <p class="sub-header">(ডিজিট্যাল ক্রিয়েশনের নানা কথা)</p>
+    </header>
+
+    <!-- Prompt Navigation -->
+    <nav class="prompt-nav" id="promptNav" aria-label="Prompt Navigation">
+      <!-- Navigation links injected by JavaScript -->
+    </nav>
+
+    <div class="prompt-workflow">
+      
+      <!-- Input Card -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data</span>
+          <button class="clear-btn" onclick="resetInput('inputHashtag')">Reset</button>
+        </div>
+        <label for="inputHashtag">[hashtag]</label>
+        <input type="text" id="inputHashtag" class="dynamic-input" placeholder="Enter hashtag here (without #)..." oninput="updatePrompts()" />
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        name: "Hashtag",
+        hasOpenLink: true,
+        text: `https://www.facebook.com/hashtag/[hashtag]`
+      },
+      {
+        id: 2,
+        name: "Brand Color",
+        hasOpenLink: false,
+        text: `BRAND COLOR
+
+Use this Color Palette: Couleurs aléatoires 185 Color Palette
+
+Colors in Palette	
+Hex	RGB
+#26483c	(38,72,60)
+#fa72dc	(250,114,220)
+#3582be	(53,130,190)
+#d2da7e	(210,218,126)
+#5d8d7f	(93,141,127)`
+      },
+      {
+        id: 3,
+        name: "Facebook Page URL Short",
+        hasOpenLink: false,
+        text: `facebook.com/digicreationtips`
+      },
+      {
+        id: 4,
+        name: "Facebook Page URL",
+        hasOpenLink: true,
+        text: `https://www.facebook.com/digicreationtips/`
+      },
+      {
+        id: 5,
+        name: "Facebook Group",
+        hasOpenLink: true,
+        text: `https://www.facebook.com/groups/digicreationtips`
+      },
+      {
+        id: 6,
+        name: "Blog",
+        hasOpenLink: true,
+        text: `https://digicreationtips.blogspot.com/`
+      },
+      {
+        id: 7,
+        name: "Repository",
+        hasOpenLink: true,
+        text: `https://digicreationtips.spmukherjee.co.in/`
+      }
+    ];
+
+    function createNavigation() {
+      const nav = document.getElementById('promptNav');
+      nav.innerHTML = '';
+      templates.forEach(t => {
+        const link = document.createElement('a');
+        link.className = 'nav-btn';
+        link.href = `#card-${t.id}`;
+        link.textContent = t.name;
+        nav.appendChild(link);
+      });
+    }
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.id = `card-${t.id}`;
+
+        const header = document.createElement('div');
+        header.className = 'step-header';
+
+        const label = document.createElement('span');
+        label.className = 'step-label';
+        label.textContent = t.name;
+        header.appendChild(label);
+
+        const content = document.createElement('div');
+        content.className = 'prompt-content';
+        content.id = `p${t.id}`;
+
+        const btnGroup = document.createElement('div');
+        btnGroup.className = 'btn-group';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'btn copy-btn';
+        copyBtn.onclick = function() { copyText(`p${t.id}`, this); };
+        const copySpan = document.createElement('span');
+        copySpan.textContent = `Copy ${t.name}`;
+        copyBtn.appendChild(copySpan);
+        btnGroup.appendChild(copyBtn);
+
+        if (t.hasOpenLink) {
+          const openBtn = document.createElement('button');
+          openBtn.className = 'btn open-btn';
+          openBtn.onclick = function() { openPromptLink(`p${t.id}`); };
+          const openSpan = document.createElement('span');
+          openSpan.textContent = 'Open Link';
+          openBtn.appendChild(openSpan);
+          btnGroup.appendChild(openBtn);
+        }
+
+        card.appendChild(header);
+        card.appendChild(content);
+        card.appendChild(btnGroup);
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const rawHashtag = document.getElementById('inputHashtag').value.trim().replace(/^#+/, '');
+      const hashtagVal = rawHashtag || "[hashtag]";
+
+      templates.forEach(t => {
+        let updatedText = t.text;
+        if (t.id === 1) {
+          updatedText = updatedText.split('[hashtag]').join(hashtagVal);
+        }
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    function openPromptLink(id) {
+      const url = document.getElementById(id).innerText.trim();
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createNavigation();
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>
