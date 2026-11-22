@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App Idea-to-Prompt System Starter</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Brand Palette: Couleurs aléatoires 185 */
+      --brand-deep-pine: #26483c;
+      --brand-magenta: #fa72dc;
+      --brand-sapphire: #3582be;
+      --brand-chartreuse: #d2da7e;
+      --brand-sage: #5d8d7f;
+
+      /* Derived Corporate Surfaces & Gloss */
+      --bg-base: #13251f;
+      --glass-card: linear-gradient(145deg, rgba(38, 72, 60, 0.86) 0%, rgba(21, 41, 34, 0.95) 100%);
+      --glass-highlight: rgba(210, 218, 126, 0.25);
+      --card-border: rgba(93, 141, 127, 0.35);
+      --text-primary: #f8faf9;
+      --text-secondary: #c9d8d3;
+      --text-muted: #8fb3a8;
+      --code-bg: rgba(14, 28, 23, 0.82);
+      --shadow-elevated: 0 24px 48px -12px rgba(8, 17, 14, 0.72), 0 0 1px 1px rgba(210, 218, 126, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(ellipse 85% 50% at 50% -12%, rgba(53, 130, 190, 0.28), transparent),
+        radial-gradient(circle at 88% 20%, rgba(250, 114, 220, 0.12), transparent 42%),
+        radial-gradient(circle at 12% 78%, rgba(210, 218, 126, 0.10), transparent 48%),
+        linear-gradient(160deg, #1b342b 0%, #26483c 45%, #13251f 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      line-height: 1.65;
+      padding: 64px 20px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 920px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Executive Brand Header */
+    header {
+      text-align: center;
+      margin-bottom: 52px;
+      position: relative;
+    }
+
+    header::after {
+      content: "";
+      display: block;
+      width: 110px;
+      height: 3px;
+      margin: 22px auto 0;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--brand-sage), var(--brand-chartreuse), var(--brand-sapphire), var(--brand-magenta));
+      box-shadow: 0 2px 12px rgba(210, 218, 126, 0.35);
+    }
+
+    h1 {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-size: 2.55rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 25%, var(--brand-chartreuse) 75%, #eef2c6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Glossy Corporate Card */
+    .step-card {
+      position: relative;
+      background: var(--glass-card);
+      border: 1px solid var(--card-border);
+      border-top: 1px solid var(--glass-highlight);
+      border-radius: 20px;
+      padding: 34px 36px;
+      box-shadow: var(--shadow-elevated);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      overflow: hidden;
+    }
+
+    /* Subtle top glossy sheen */
+    .step-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 5%, rgba(210, 218, 126, 0.5) 50%, transparent 95%);
+      pointer-events: none;
+    }
+
+    .step-card:hover {
+      border-color: rgba(210, 218, 126, 0.45);
+      box-shadow: 0 28px 56px -12px rgba(8, 17, 14, 0.85), 0 0 0 1px rgba(53, 130, 190, 0.28);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(93, 141, 127, 0.25);
+    }
+
+    /* Glossy Metallic Corporate Badge */
+    .step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: linear-gradient(135deg, #276494 0%, var(--brand-sapphire) 100%);
+      border: 1px solid rgba(210, 218, 126, 0.4);
+      padding: 6px 16px;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px rgba(53, 130, 190, 0.35);
+    }
+
+    .step-label::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-chartreuse);
+      box-shadow: 0 0 8px var(--brand-chartreuse);
+    }
+
+    /* Magenta Accent Reset Button */
+    .clear-btn {
+      background: linear-gradient(180deg, rgba(250, 114, 220, 0.16) 0%, rgba(250, 114, 220, 0.06) 100%);
+      border: 1px solid rgba(250, 114, 220, 0.55);
+      color: #ff9ee9;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .clear-btn:hover {
+      background: linear-gradient(180deg, var(--brand-magenta) 0%, #d94bb9 100%);
+      border-color: #ffb8ef;
+      color: #182b24;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 4px 16px rgba(250, 114, 220, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .clear-btn:active {
+      transform: translateY(0);
+    }
+
+    label {
+      display: block;
+      color: var(--brand-chartreuse);
+      font-weight: 600;
+      font-size: 0.94rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid rgba(93, 141, 127, 0.4);
+      padding: 18px 20px;
+      border-radius: 12px;
+      color: #f8faf9;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      outline: none;
+      resize: vertical;
+      min-height: 120px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.45);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+
+    .dynamic-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .dynamic-input:focus {
+      background: rgba(10, 21, 17, 0.92);
+      border-color: var(--brand-chartreuse);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(210, 218, 126, 0.22);
+    }
+
+    /* Prompt Display Box */
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 26px 28px;
+      border-radius: 14px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.93rem;
+      color: #e6efec;
+      white-space: pre-wrap;
+      border: 1px solid rgba(93, 141, 127, 0.3);
+      box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5);
+      margin-bottom: 24px;
+      line-height: 1.7;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    .prompt-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 4px;
+    }
+    .prompt-content::-webkit-scrollbar-thumb {
+      background: rgba(93, 141, 127, 0.45);
+      border-radius: 4px;
+    }
+    .prompt-content::-webkit-scrollbar-thumb:hover {
+      background: var(--brand-sage);
+    }
+
+    /* Glossy Executive Action Button */
+    .btn {
+      position: relative;
+      padding: 15px 32px;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 100%;
+      text-decoration: none;
+      overflow: hidden;
+    }
+
+    .copy-btn {
+      background: linear-gradient(180deg, #4393d1 0%, var(--brand-sapphire) 52%, #266596 100%);
+      color: #ffffff;
+      border: 1px solid rgba(210, 218, 126, 0.45);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+        0 8px 20px -4px rgba(53, 130, 190, 0.5);
+    }
+
+    /* Glossy top reflection sweep */
+    .copy-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.02) 100%);
+      pointer-events: none;
+    }
+
+    .copy-btn:hover {
+      background: linear-gradient(180deg, #52a2e0 0%, #3d8fce 52%, #2b71a8 100%);
+      border-color: var(--brand-chartreuse);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 12px 26px -4px rgba(53, 130, 190, 0.65),
+        0 0 16px rgba(210, 218, 126, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .copy-btn:active {
+      transform: translateY(1px);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(180deg, #dee592 0%, var(--brand-chartreuse) 52%, #b8c25e 100%);
+      border-color: #ffffff;
+      color: var(--brand-deep-pine);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        0 8px 22px -4px rgba(210, 218, 126, 0.45);
+    }
+
+    /* Corporate Footer */
+    .footer {
+      margin-top: 76px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      border-top: 1px solid rgba(93, 141, 127, 0.28);
+      padding-top: 34px;
+      width: 100%;
+      padding-bottom: 30px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 40px 16px 28px;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      .step-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+      .prompt-content {
+        padding: 20px 18px;
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>App Idea-to-Prompt System Starter</h1>
+    </header>
+
+    <div class="prompt-workflow">
+      
+      <!-- Multiline Input Card 1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data 1</span>
+          <button class="clear-btn" onclick="resetInput('inputAppIdea')">Reset</button>
+        </div>
+        <label for="inputAppIdea">[App-এর ধারণাটি ]</label>
+        <textarea id="inputAppIdea" class="dynamic-input" placeholder="আপনার App-এর প্রাথমিক ধারণাটি এখানে লিখুন বা পেস্ট করুন..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `আমি একটি নতুন AI-Assisted Tool / Web App তৈরি করার ধারণা নিয়ে আপনার সঙ্গে আলোচনা করতে চাই।
+
+আমার প্রাথমিক ধারণা হলো:
+
+[App-এর ধারণাটি ]
+
+আমার বিশেষ আগ্রহ হলো, এই App-এর অন্তর্ভুক্ত প্রতিটি স্বতন্ত্র কাজের জন্য আলাদা, সম্পূর্ণ এবং পুনর্ব্যবহারযোগ্য Prompt তৈরি করা। পাশাপাশি, সবকটি Prompt পরিচালনা করার জন্য একটি Master Prompt-ও তৈরি করতে চাই।
+
+এরপর এই সম্পূর্ণ Prompt System এবং প্রয়োজনীয় Dynamic Input Fields ব্যবহার করে একটি Mobile-Responsive, Single-File HTML Prompt Generator Web App তৈরি করা হবে।
+
+আমার সঙ্গে বন্ধুত্বপূর্ণভাবে আলোচনা করুন। প্রথমে আমার ধারণাটি বুঝুন, তারপর প্রয়োজনীয় প্রশ্ন করুন, নতুন সম্ভাবনা ও কার্যকর আইডিয়া তুলে ধরুন।
+
+আমাকে একসঙ্গে অনেক তথ্য বা বিশাল পরিকল্পনা দেবেন না। আমরা ধাপে ধাপে আলোচনা করব।
+
+কোনও কিছু আগে থেকে ধরে নেবেন না। Prompt System, Master Prompt, Dynamic Input Fields এবং HTML App-এর কাঠামো—সবকিছুই আমাদের আলোচনার মধ্য দিয়ে ধীরে ধীরে তৈরি হবে।
+
+এখনই Prompt বা HTML Code তৈরি শুরু করবেন না। প্রথমে আমার ধারণা নিয়ে আলোচনা শুরু করুন।`
+      },
+      {
+        id: 2,
+        text: `আমি এমন একটি AI-Assisted Instagram Carousel Creator App তৈরি করতে চাই, যেখান থেকে বিভিন্ন ধরনের Instagram Carousel তৈরি করা যাবে।
+
+আমি চাই, বিভিন্ন Carousel Format, Content Purpose, Storytelling Structure এবং Design Style অনুযায়ী আলাদা আলাদা পুনর্ব্যবহারযোগ্য Prompt থাকবে।`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const appIdeaVal = document.getElementById('inputAppIdea').value.trim() || "[App-এর ধারণাটি ]";
+
+      templates.forEach(t => {
+        let updatedText = t.text;
+        if (t.id === 1) {
+          updatedText = updatedText.split('[App-এর ধারণাটি ]').join(appIdeaVal);
+        }
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>

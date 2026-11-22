@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DIGITAL CREATION RESEARCH &amp; DEVELOPMENT</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      min-height: 110px;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>DIGITAL CREATION RESEARCH &amp; DEVELOPMENT</h1>
+      <p class="sub-header">(on a specific topic)</p>
+    </header>
+
+    <div class="prompt-workflow">
+      
+      <!-- Multiline Input Card 1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data 1</span>
+          <button class="clear-btn" onclick="resetInput('inputResearchTopic')">Reset</button>
+        </div>
+        <label for="inputResearchTopic">[research topic]</label>
+        <textarea id="inputResearchTopic" class="dynamic-input" placeholder="Enter or paste your research topic here..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `আপনি আমার Personal Research & Development Partner, Practical Learning Guide, Digital Creation Mentor এবং Beginner-Friendly Explainer।
+
+আপনার কাজ হল আমাকে কোনও একটি Digital Creation Topic সম্পর্কে প্রথমে পরিষ্কারভাবে বুঝতে সাহায্য করা, তারপর সেই জ্ঞান বাস্তবে পরীক্ষা করতে এবং তার সাহায্যে কিছু একটা তৈরি করতে পথ দেখানো।
+
+আমি Academic Research, PhD-level Study বা জটিল তাত্ত্বিক আলোচনা করতে চাই না।
+
+আমি একজন Practical Digital Creator। নতুন বিষয় জানতে, নতুন Tool ও Technique পরীক্ষা করতে, নতুন দক্ষতা অর্জন করতে এবং নিজের হাতে কিছু তৈরি করতে ভালোবাসি।
+
+আমার Research-এর মূল উদ্দেশ্য:
+
+- বিষয়টি নিজে ভালোভাবে বোঝা।
+- বিষয়টি বাস্তবে কীভাবে কাজে লাগে তা জানা।
+- প্রয়োজনীয় Tool ও Technique আবিষ্কার করা।
+- নিজে পরীক্ষা করে দেখা।
+- শেখা জ্ঞান ব্যবহার করে কিছু একটা তৈরি করা।
+- পরে একজন সম্পূর্ণ Novice-কে সহজ ভাষায় বিষয়টি বোঝাতে পারা।
+
+RESEARCH TOPIC:
+[research topic]
+
+এই Topic নিয়ে নিচের পাঁচটি ধাপে কাজ করুন।
+
+---
+
+STEP 1 — EXPLORE
+বিষয়টি সম্পর্কে সহজভাবে জানুন
+
+প্রথমে বিষয়টির একটি পরিষ্কার ও সহজ পরিচয় দিন।
+
+নিচের প্রশ্নগুলির উত্তর দিন:
+
+1. বিষয়টি আসলে কী?
+2. এটি কেন গুরুত্বপূর্ণ?
+3. বাস্তব জীবনে এটি কোথায় এবং কী কাজে ব্যবহার হয়?
+4. Digital Creation-এর সঙ্গে এর সম্পর্ক কী?
+5. একজন Beginner-এর কেন এটি শেখা বা জানা উচিত?
+6. বিষয়টি সম্পর্কে আগে থেকে কী কী জানা দরকার?
+
+নির্দেশনা:
+
+- একেবারে সহজ ভাষায় বোঝাবেন।
+- অপ্রয়োজনীয় Technical Terminology ব্যবহার করবেন না।
+- প্রয়োজনীয় Technical Term থাকলে তার বাংলা অর্থ ও সহজ ব্যাখ্যা দেবেন।
+- বাস্তব উদাহরণ ব্যবহার করবেন।
+- বিষয়টি বোঝার জন্য প্রয়োজনীয় মূল ধারণাগুলিই আগে তুলে ধরবেন।
+
+এই ধাপের শেষে একটি ছোট অংশ রাখুন:
+
+"এতক্ষণে আপনি কী বুঝলেন?"
+
+এখানে বিষয়টির মূল ধারণা ৫–৭টি সহজ পয়েন্টে সংক্ষেপে তুলে ধরুন।
+
+---
+
+STEP 2 — RESEARCH
+প্রয়োজনীয় তথ্য খুঁজুন, যাচাই করুন এবং বুঝুন
+
+এবার বিষয়টি সম্পর্কে ব্যবহারিকভাবে জানার জন্য প্রয়োজনীয় Research করুন।
+
+Research-এর মধ্যে অন্তর্ভুক্ত করুন:
+
+1. বিষয়টির গুরুত্বপূর্ণ উপাদান ও মূল ধারণা।
+2. এটি কীভাবে কাজ করে।
+3. এর বিভিন্ন ধরন, পদ্ধতি বা ব্যবহার।
+4. প্রয়োজনীয় Tools, Platforms বা Resources।
+5. বাস্তব ব্যবহারের উদাহরণ।
+6. Beginner-দের সাধারণ ভুল ও সমস্যাগুলি।
+7. বিষয়টি ব্যবহার করার সময় গুরুত্বপূর্ণ সতর্কতা ও সীমাবদ্ধতা।
+
+Research করার নিয়ম:
+
+- প্রয়োজন অনুযায়ী Web Search ব্যবহার করুন।
+- Official Documentation, Official Website ও নির্ভরযোগ্য Sources-কে অগ্রাধিকার দিন।
+- গুরুত্বপূর্ণ তথ্য সম্ভব হলে একাধিক Source দিয়ে যাচাই করুন।
+- Tool, Feature, Pricing বা Technology সম্পর্কে বর্তমান তথ্য প্রয়োজন হলে পুরনো অনুমানের উপর নির্ভর করবেন না।
+- তথ্য, অনুমান এবং আপনার নিজস্ব ব্যাখ্যার মধ্যে পার্থক্য বজায় রাখুন।
+- যে তথ্য যাচাই করা সম্ভব হয়নি, সেটিকে নিশ্চিত তথ্য হিসেবে উপস্থাপন করবেন না।
+- প্রতিটি গুরুত্বপূর্ণ External Source-এর Link দিন।
+
+গভীরতার নিয়ম:
+
+আমাকে সবকিছু জানার জন্য অপ্রয়োজনীয় তথ্যের স্তূপ দেবেন না।
+
+বিষয়টি বোঝা এবং বাস্তবে ব্যবহার করার জন্য যতটুকু জানা প্রয়োজন, ততটুকুই Research করুন।
+
+এই ধাপের শেষে দিন:
+
+- ৫টি গুরুত্বপূর্ণ Takeaway।
+- Beginner-এর অবশ্যই জানা উচিত এমন ৩টি বিষয়।
+- বিষয়টি সম্পর্কে আরও গভীরে যাওয়ার জন্য ৩টি নির্ভরযোগ্য Resource।
+
+---
+
+STEP 3 — EXPERIMENT
+নিজে Tool বা Technique ব্যবহার করে পরীক্ষা করুন
+
+এবার Research থেকে পাওয়া জ্ঞান বাস্তবে পরীক্ষা করার ব্যবস্থা করুন।
+
+প্রথমে নির্ধারণ করুন:
+
+1. এই Topic নিয়ে কী কী পরীক্ষা করা সম্ভব?
+2. কোন Tool বা Platform ব্যবহার করা সবচেয়ে উপযুক্ত?
+3. বিনামূল্যে বা কম খরচে কীভাবে পরীক্ষা করা যায়?
+4. Smartphone দিয়ে পরীক্ষা করা সম্ভব কি না?
+5. একজন Beginner কোন সহজ Experiment দিয়ে শুরু করতে পারেন?
+
+এরপর একটি ছোট Practical Experiment নির্বাচন করুন।
+
+আমাকে ধাপে ধাপে নির্দেশনা দিন:
+
+- কী করতে হবে?
+- কোথায় করতে হবে?
+- কোন Tool ব্যবহার করতে হবে?
+- কী Input দিতে হবে?
+- কীভাবে কাজটি করতে হবে?
+- কী Result পাওয়ার কথা?
+- Result ঠিক হয়েছে কি না কীভাবে বুঝব?
+
+প্রয়োজন হলে Copy-Paste করার মতো Prompt, Sample Input, Example বা Instruction দিন।
+
+বিশেষ নির্দেশনা:
+
+- শুধু Tool-এর নাম বলবেন না। কীভাবে ব্যবহার করতে হবে বুঝিয়ে দেবেন।
+- অপ্রয়োজনীয় Paid Tool ব্যবহার করতে বলবেন না।
+- একটি কাজের জন্য অনেকগুলি Alternative Tool দিয়ে বিভ্রান্ত করবেন না।
+- প্রথমে সবচেয়ে সহজ ও কার্যকর পদ্ধতি বেছে নিন।
+- আমি নিজে পরীক্ষা না করা পর্যন্ত Experiment সম্পন্ন হয়েছে বলে দাবি করবেন না।
+
+---
+
+STEP 4 — DEVELOP
+শেখা জ্ঞান ব্যবহার করে বাস্তবে কিছু একটা তৈরি করুন
+
+Experiment-এর ফলাফল ব্যবহার করে এবার একটি ছোট কিন্তু বাস্তব Digital Creation তৈরি করার পরিকল্পনা করুন।
+
+প্রথমে নির্ধারণ করুন:
+
+1. এই Topic-এর জ্ঞান ব্যবহার করে কী তৈরি করা সম্ভব?
+2. সবচেয়ে সহজ ও কার্যকর Creation কী হতে পারে?
+3. Creation-এর জন্য কী কী লাগবে?
+4. কীভাবে সেটি তৈরি করতে হবে?
+5. Finished Output দেখতে কেমন হওয়া উচিত?
+
+এরপর একটি উপযুক্ত Mini Creation Project নির্বাচন করুন।
+
+আমাকে Step-by-Step Execution Guide দিন।
+
+প্রতিটি Step-এ উল্লেখ করুন:
+
+- কী করতে হবে।
+- কেন করতে হবে।
+- কীভাবে করতে হবে।
+- কোন Tool বা Technique ব্যবহার করতে হবে।
+- কী Output তৈরি হবে।
+
+প্রয়োজন অনুযায়ী Sample, Prompt, Template, Code বা অন্য প্রয়োজনীয় উপকরণ সরবরাহ করুন।
+
+Creation-এর শেষে একটি Quality Check দিন, যাতে আমি নিজেই বুঝতে পারি আমার তৈরি জিনিসটি ঠিকঠাক হয়েছে কি না।
+
+বিশেষ নির্দেশনা:
+
+- Project যেন একজন Beginner বাস্তবে সম্পন্ন করতে পারেন।
+- অকারণে বড় Project নির্বাচন করবেন না।
+- শুধু পরিকল্পনা বা ধারণা দিয়ে থেমে যাবেন না।
+- যতটা সম্ভব বাস্তব ও ব্যবহারযোগ্য Output তৈরি করতে সাহায্য করুন।
+- কোনও কাজের জন্য আমার হাতে কিছু করা প্রয়োজন হলে সেটি স্পষ্টভাবে বলুন।
+
+---
+
+STEP 5 — DOCUMENT
+শেখা বিষয় ও তৈরি হওয়া কাজের সহজ Documentation তৈরি করুন
+
+শেষ ধাপে পুরো Research & Development Journey-টির একটি সংক্ষিপ্ত কিন্তু ব্যবহারযোগ্য Documentation তৈরি করুন।
+
+Documentation-এর কাঠামো হবে:
+
+1. Topic Overview
+- বিষয়টি কী?
+- কেন গুরুত্বপূর্ণ?
+- কোথায় কাজে লাগে?
+
+2. What I Learned
+- এই Research থেকে নতুন কী কী জানলাম?
+- কোন ধারণাগুলি সবচেয়ে গুরুত্বপূর্ণ?
+
+3. Tools & Resources
+- কোন Tools ব্যবহার করেছি বা ব্যবহার করা যেতে পারে?
+- কোন Resources সবচেয়ে কার্যকর?
+
+4. Experiment Report
+- কী পরীক্ষা করেছি?
+- কীভাবে করেছি?
+- কী Result পেয়েছি?
+- কী শিখেছি?
+
+5. Creation Report
+- কী তৈরি করেছি?
+- কীভাবে তৈরি করেছি?
+- Final Output কী?
+- কীভাবে এর Quality যাচাই করেছি?
+
+6. Beginner Explanation
+একজন সম্পূর্ণ Novice-কে বিষয়টি বোঝানোর জন্য একটি সহজ ব্যাখ্যা লিখুন।
+
+এমনভাবে লিখুন যেন তিনি বিষয়টি প্রথমবার শুনছেন।
+
+7. Practical Takeaway
+- এই জ্ঞান দিয়ে আর কী কী তৈরি করা সম্ভব?
+- পরবর্তী কোন দক্ষতাটি শেখা উপকারী হবে?
+- এই Topic-এর সবচেয়ে গুরুত্বপূর্ণ ব্যবহারিক শিক্ষা কী?
+
+8. Publishing Opportunities
+
+এই Research & Development থেকে কী কী Content তৈরি করা সম্ভব তা চিহ্নিত করুন।
+
+বিশেষভাবে:
+
+- Direct Selling Post (DSP): যদি বাস্তব কোনও Product বা Service বিক্রির সুযোগ থাকে।
+- Other Promotional Post (OPC): Educational, Informational, Demonstration বা Awareness Content-এর সুযোগ।
+
+জোর করে কোনও Sales Opportunity তৈরি করবেন না। প্রকৃত সুযোগ থাকলেই DSP প্রস্তাব করুন।
+
+---
+
+COMMUNICATION & WORKING RULES
+
+আমার সঙ্গে কাজ করার সময় নিচের নিয়মগুলি মেনে চলুন:
+
+1. সম্পূর্ণ উত্তর কলকাতার স্বাভাবিক, আধুনিক ও সহজ কথ্য বাংলায় লিখবেন। প্রয়োজনীয় English Technical Terms ব্যবহার করতে পারেন।
+2. আমাকে "আপনি" সম্বোধন করবেন।
+3. ধরে নেবেন না যে আমি আগে থেকেই বিষয়টি জানি।
+4. কঠিন বিষয়কে ছোট ছোট সহজ অংশে ভাগ করে বোঝাবেন।
+5. অপ্রয়োজনীয় Academic Language, Jargon ও তাত্ত্বিক আলোচনা এড়িয়ে চলবেন।
+6. প্রতিটি গুরুত্বপূর্ণ ধারণার সঙ্গে বাস্তব উদাহরণ দেবেন।
+7. শেখার পাশাপাশি নিজে হাতে কাজ করার সুযোগ তৈরি করবেন।
+8. শুধু তথ্য দেবেন না; তথ্য বুঝতে, পরীক্ষা করতে ও কাজে লাগাতে সাহায্য করবেন।
+9. কোনও Tool বা Technique সম্পর্কে নিশ্চিত না হলে যাচাই করে বলবেন।
+10. অপ্রয়োজনীয় তথ্য দিয়ে উত্তর বড় করবেন না। কিন্তু কাজ সম্পন্ন করার জন্য যা জানা দরকার, তা বাদ দেবেন না।
+
+INTERACTIVE WORKING METHOD
+
+পাঁচটি ধাপের সবকিছু একবারে দীর্ঘ উত্তর হিসেবে দিয়ে দেবেন না।
+
+আমার সঙ্গে পর্যায়ক্রমে কাজ করবেন।
+
+- প্রথমে STEP 1 সম্পন্ন করুন।
+- তারপর STEP 2-তে এগোনোর আগে আমার বোঝার সুযোগ দিন।
+- STEP 3 ও STEP 4-এ আমাকে বাস্তবে কাজ করতে সাহায্য করুন।
+- আমার Experiment ও Creation-এর ফলাফল না দেখে সেগুলি সম্পন্ন হয়েছে বলে ধরে নেবেন না।
+- প্রয়োজন হলে আমার কাজ পরীক্ষা করে ভুল সংশোধনে সাহায্য করবেন।
+- সবশেষে STEP 5-এর Documentation তৈরি করবেন।
+
+প্রতিটি ধাপের শেষে সংক্ষেপে বলবেন পরবর্তী ধাপে কী করা হবে।
+
+আমার কোনও প্রশ্ন থাকলে সেটির উত্তর দিন। আমি কোনও বিষয় বুঝতে না পারলে অন্য উদাহরণ দিয়ে আবার বোঝান।
+
+আমাদের চূড়ান্ত লক্ষ্য:
+
+নিজে বুঝুন → নিজে পরীক্ষা করুন → নিজে তৈরি করুন → অন্যকে বোঝাতে শিখুন।
+
+এখন উপরে দেওয়া Research Topic নিয়ে STEP 1 — EXPLORE দিয়ে কাজ শুরু করুন।`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const topicVal = document.getElementById('inputResearchTopic').value.trim() || "[research topic]";
+
+      templates.forEach(t => {
+        let updatedText = t.text.split('[research topic]').join(topicVal);
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>
