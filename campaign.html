@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affiliate Visual Income — Prompt Generator</title>
+<link rel="icon" href="spm.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.52);--border:rgba(255,255,255,.09);
+  --text:#f8fafc;--muted:#94a3b8;--accent:#22d3ee;--accentHover:#67e8f9;
+  --success:#10b981;--code:rgba(0,0,0,.30);--shadow:0 12px 32px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;padding:42px 18px 24px;background:fixed linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.6}
+.container{width:100%;max-width:940px;margin:0 auto}
+header{text-align:center;margin:0 auto 34px;max-width:760px}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.045em;line-height:1.12;color:#fff}
+.subtitle{font-size:1rem;color:var(--muted);margin-top:12px}
+.workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0 28px}
+.workflow-item{padding:13px 12px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.035);text-align:center}
+.workflow-item b{display:block;color:var(--accent);font-size:.68rem;letter-spacing:.12em;margin-bottom:4px}
+.workflow-item span{font-size:.83rem;font-weight:700}
+.notice{border:1px solid rgba(34,211,238,.22);background:rgba(34,211,238,.055);padding:15px 17px;border-radius:13px;color:#cbd5e1;font-size:.84rem;margin-bottom:24px}
+.notice strong{color:#fff}
+.section{background:var(--card);border:1px solid var(--border);border-radius:21px;padding:27px;margin:20px 0;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.section-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:21px}
+.number{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:11px;background:var(--accent);color:#020617;font-size:.95rem;font-weight:800}
+.section-head h2{font-size:1.18rem;line-height:1.3;color:#fff}
+.section-head p{font-size:.82rem;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;margin-top:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.35);padding:3px 8px;border-radius:5px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:.76rem;font-weight:700;color:#dbe4ef}
+input,textarea,select{width:100%;border:1px solid rgba(148,163,184,.27);border-radius:10px;background:rgba(2,6,23,.55);color:#f8fafc;padding:12px 13px;font:500 .86rem Inter,Arial,sans-serif;outline:none}
+input::placeholder,textarea::placeholder{color:#64748b}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+textarea{min-height:150px;resize:vertical;line-height:1.55}
+textarea.compact{min-height:90px}
+select{appearance:auto}
+.hint{font-size:.7rem;color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button{border:0;border-radius:10px;padding:13px 18px;font:700 .84rem Inter,Arial,sans-serif;cursor:pointer;transition:.18s ease}
+button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.generate{background:var(--accent);color:#020617;flex:1}
+.copy{background:rgba(34,211,238,.1);border:1px solid var(--accent);color:var(--accent);padding:9px 14px}
+.copy.copied{background:var(--success);border-color:var(--success);color:#fff}
+.secondary{background:rgba(148,163,184,.13);border:1px solid var(--border);color:#dbe4ef}
+.output{margin-top:20px;border:1px solid var(--border);border-radius:13px;overflow:hidden}
+.output-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:rgba(2,6,23,.48);border-bottom:1px solid var(--border)}
+.output-head strong{font-size:.74rem;letter-spacing:.08em;color:#e2e8f0}
+.prompt{padding:19px;background:var(--code);color:#cbd5e1;font:500 .78rem/1.75 "Source Code Pro",monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:580px;overflow:auto;min-height:115px}
+.prompt::-webkit-scrollbar{width:7px}.prompt::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:8px}
+.bottom-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:26px 0}
+footer{margin:55px auto 0;padding:24px 10px 10px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:.75rem}
+@media(max-width:650px){
+ body{padding:28px 13px 18px}.workflow{grid-template-columns:1fr;gap:8px}.workflow-item{text-align:left;display:flex;gap:10px;align-items:center}.workflow-item b{margin:0;min-width:66px}
+ .section{padding:19px 16px;border-radius:16px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}
+ .section-head h2{font-size:1.05rem}.prompt{font-size:.73rem;padding:15px;max-height:480px}
+ .output-head{align-items:flex-start}.copy{white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<main class="container">
+<header>
+  <div class="eyebrow">AI-Assisted Affiliate Publishing Workflow</div>
+  <h1>Affiliate Visual Income<br>Prompt Generator</h1>
+  <p class="subtitle">Three connected prompts. One repeatable workflow. From product research and AI-created visuals to a published Bridge Page and Facebook post.</p>
+  <div class="workflow" aria-label="Prompt workflow">
+    <div class="workflow-item"><b>PROMPT 01</b><span>Bridge Page Copy</span></div>
+    <div class="workflow-item"><b>PROMPT 02</b><span>Bridge Page HTML</span></div>
+    <div class="workflow-item"><b>PROMPT 03</b><span>Facebook Caption</span></div>
+  </div>
+</header>
+
+<div class="notice">
+  <strong>How this workflow works:</strong> First, use your existing Product Details Extractor and paste its complete Prompt #1 output into Prompt 01. Create your product image or images separately with your existing Product Visual Creation System™. Add the hosted image URL(s) to Prompt 02 so the Bridge Page can display them. When generating the Facebook caption with Prompt 03, attach the finished visual image(s) directly to your ChatGPT message. Product facts must always come from the Product Details Extractor output; images guide visual context only.
+</div>
+
+<section class="section" id="module1">
+  <div class="section-head">
+    <div class="number">01</div>
+    <div><h2>Bridge Page Copywriter</h2><p>Generate accurate, trust-focused copy using the Product Details Extractor output.</p><span class="tag">Input: Extracted Product Details + Affiliate Link</span></div>
+  </div>
+  <div class="fields">
+    <div class="field full">
+      <label for="extracted1">Complete Product Details Extractor Output *</label>
+      <textarea id="extracted1" placeholder="Paste the complete answer generated by Prompt #1 of your existing Product Details Extractor."></textarea>
+      <span class="hint">Paste the extractor's full output. Do not summarise or rewrite it before use.</span>
+    </div>
+    <div class="field full">
+      <label for="affiliate1">Affiliate Link *</label>
+      <input id="affiliate1" type="url" placeholder="Paste your complete affiliate tracking URL">
+    </div>
+    <div class="field full">
+      <label for="disclosure">Affiliate Disclosure *</label>
+      <textarea class="compact" id="disclosure">This page contains affiliate links. If you purchase through this link, I may earn a commission at no additional cost to you.</textarea>
+    </div>
+    <div class="field">
+      <label for="copyLanguage">Copy Language</label>
+      <select id="copyLanguage"><option>English</option><option>বাংলা (Kolkata, India)</option><option>Hindi</option></select>
+    </div>
+    <div class="field">
+      <label for="copyTone">Copy Tone</label>
+      <select id="copyTone"><option>Clear, helpful and trustworthy</option><option>Premium and polished</option><option>Friendly and conversational</option><option>Minimal and direct</option></select>
+    </div>
+    <div class="field">
+      <label for="copyLength">Page Copy Length</label>
+      <select id="copyLength"><option>Concise — short bridge page</option><option>Standard — balanced detail</option><option>Detailed — fuller product overview</option></select>
+    </div>
+    <div class="field">
+      <label for="copyExtra">Additional Instructions (optional)</label>
+      <input id="copyExtra" placeholder="Any specific section or requirement">
+    </div>
+  </div>
+  <div class="actions"><button class="generate" onclick="generatePrompt(1)">Generate Prompt 01</button></div>
+  <div class="output">
+    <div class="output-head"><strong>PROMPT 01 · COPYWRITER</strong><button class="copy" onclick="copyPrompt(1,this)">Copy Prompt</button></div>
+    <pre class="prompt" id="output1">Your generated prompt will appear here.</pre>
+  </div>
+</section>
+
+<section class="section" id="module2">
+  <div class="section-head">
+    <div class="number">02</div>
+    <div><h2>Bridge Page HTML Builder</h2><p>Turn your approved Bridge Page copy into a complete, mobile-responsive HTML page.</p><span class="tag">Input: Approved Copy + Affiliate Link + Optional Image URL(s)</span></div>
+  </div>
+  <div class="fields">
+    <div class="field full">
+      <label for="approvedCopy">Final Approved Bridge Page Copy *</label>
+      <textarea id="approvedCopy" placeholder="Paste the final copy generated by Prompt 01, after reviewing and approving it."></textarea>
+    </div>
+    <div class="field">
+      <label for="affiliate2">Affiliate Link *</label>
+      <input id="affiliate2" type="url" placeholder="Paste the same affiliate link used in Prompt 01">
+      <span class="hint">Use the exact tracking link. Do not use the Bridge Page URL here.</span>
+    </div>
+    <div class="field">
+      <label for="pageTitle">Page Title (optional)</label>
+      <input id="pageTitle" placeholder="Use product name or a suitable page title">
+    </div>
+    <div class="field">
+      <label for="buttonLabel">Affiliate Button Text</label>
+      <input id="buttonLabel" value="View Product Details">
+    </div>
+    <div class="field">
+      <label for="designStyle">Design Style</label>
+      <select id="designStyle"><option>Clean premium minimal</option><option>Modern editorial</option><option>Warm lifestyle</option><option>Simple high-contrast</option></select>
+    </div>
+    <div class="field">
+      <label for="imageUrls">Generated Product Image URL(s) (optional)</label>
+      <textarea class="compact" id="imageUrls" placeholder="Paste hosted image URL(s), one URL per line"></textarea>
+      <span class="hint">Use image(s) created with your existing Product Visual Creation System™ and hosted online. One URL becomes the main product image; multiple URLs become a responsive gallery. Leave blank for a text-only page.</span>
+    </div>
+    <div class="field">
+      <label for="hosting">Hosting Platform (optional)</label>
+      <input id="hosting" placeholder="e.g. Blogger, GitHub Pages, static hosting">
+    </div>
+    <div class="field">
+      <label for="htmlExtra">Additional Requirements (optional)</label>
+      <input id="htmlExtra" placeholder="Any specific layout or page requirement">
+    </div>
+    <div class="field full">
+      <label for="disclosure2">Affiliate Disclosure *</label>
+      <textarea class="compact" id="disclosure2">This page contains affiliate links. If you purchase through this link, I may earn a commission at no additional cost to you.</textarea>
+    </div>
+  </div>
+  <div class="actions"><button class="generate" onclick="generatePrompt(2)">Generate Prompt 02</button></div>
+  <div class="output">
+    <div class="output-head"><strong>PROMPT 02 · HTML BUILDER</strong><button class="copy" onclick="copyPrompt(2,this)">Copy Prompt</button></div>
+    <pre class="prompt" id="output2">Your generated prompt will appear here.</pre>
+  </div>
+</section>
+
+<section class="section" id="module3">
+  <div class="section-head">
+    <div class="number">03</div>
+    <div><h2>Facebook Post Caption Creator</h2><p>Create a ready-to-publish Facebook caption with a clear CTA, Bridge Page URL and relevant hashtags.</p><span class="tag">Input: Extracted Product Details + Published Bridge Page URL</span></div>
+  </div>
+  <div class="fields">
+    <div class="field full">
+      <label for="extracted3">Product Details Extractor Output *</label>
+      <textarea id="extracted3" placeholder="Paste the same complete Product Details Extractor output used in Prompt 01."></textarea>
+    </div>
+    <div class="field full">
+      <label for="bridgeUrl">Published Bridge Page URL *</label>
+      <input id="bridgeUrl" type="url" placeholder="Paste the live URL of your published Bridge Page">
+    </div>
+    <div class="field">
+      <label for="postLanguage">Caption Language</label>
+      <select id="postLanguage"><option>English</option><option>বাংলা (Kolkata, India)</option><option>Hindi</option></select>
+    </div>
+    <div class="field">
+      <label for="postStyle">Caption Style</label>
+      <select id="postStyle"><option>Helpful and curiosity-led</option><option>Problem-to-solution</option><option>Feature-led</option><option>Lifestyle-led</option><option>Short and direct</option></select>
+    </div>
+    <div class="field">
+      <label for="postLength">Caption Length</label>
+      <select id="postLength"><option>Short</option><option>Medium</option><option>Long</option></select>
+    </div>
+    <div class="field">
+      <label for="postCTA">CTA Wording</label>
+      <input id="postCTA" value="Visit here for details">
+    </div>
+    <div class="field">
+      <label for="visualModes">Product Visual Creation System™ Mode(s) (optional)</label>
+      <input id="visualModes" placeholder="e.g. Product X-Ray™, Problem-Solution™, Lifestyle">
+      <span class="hint">Enter the mode or modes used to create the attached image(s), if known.</span>
+    </div>
+    <div class="field full">
+      <label for="visualContext">Visual Context (optional)</label>
+      <textarea class="compact" id="visualContext" placeholder="Optional: briefly describe the visual(s), or leave blank and attach the image(s) when you submit the generated prompt to ChatGPT."></textarea>
+      <span class="hint">Important: this generator does not transfer image files to ChatGPT. Attach the finished image(s) yourself along with the generated Prompt 03.</span>
+    </div>
+    <div class="field full">
+      <label for="disclosure3">Affiliate Disclosure for Facebook Post *</label>
+      <textarea class="compact" id="disclosure3">This post contains an affiliate link. I may earn a commission if you make a purchase through the link, at no additional cost to you.</textarea>
+    </div>
+    <div class="field full">
+      <label for="postExtra">Additional Instructions (optional)</label>
+      <input id="postExtra" placeholder="e.g. audience, preferred hashtag count or brand voice">
+    </div>
+  </div>
+  <div class="actions"><button class="generate" onclick="generatePrompt(3)">Generate Prompt 03</button></div>
+  <div class="output">
+    <div class="output-head"><strong>PROMPT 03 · FACEBOOK CAPTION</strong><button class="copy" onclick="copyPrompt(3,this)">Copy Prompt</button></div>
+    <pre class="prompt" id="output3">Your generated prompt will appear here.</pre>
+  </div>
+</section>
+
+<div class="bottom-actions">
+  <button class="secondary" onclick="generateAll()">Generate All Three Prompts</button>
+  <button class="secondary" onclick="resetForm()">Reset All Fields</button>
+</div>
+
+<footer>
+  <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+</footer>
+</main>
+
+<script>
+const get = id => (document.getElementById(id)?.value || '').trim();
+
+function buildPrompt1(){
+  return `Act as an ethical conversion copywriter, product-page strategist and consumer-trust editor.
+
+YOUR MISSION
+Create complete, clear and persuasive Bridge Page copy for the affiliate product described in the supplied Product Details Extractor output. The extractor output is the sole source of product information. Your job is to organise and communicate those details—not to conduct new research or invent missing information.
+
+SOURCE OF TRUTH — COMPLETE PRODUCT DETAILS EXTRACTOR OUTPUT
+${get('extracted1') || '[PASTE COMPLETE PRODUCT DETAILS EXTRACTOR OUTPUT]'}
+
+AFFILIATE LINK
+${get('affiliate1') || '[PASTE AFFILIATE LINK]'}
+
+AFFILIATE DISCLOSURE — DISPLAY THIS CLEARLY
+${get('disclosure')}
+
+COPY SETTINGS
+Language: ${get('copyLanguage')}
+Tone: ${get('copyTone')}
+Length: ${get('copyLength')}
+Additional instructions: ${get('copyExtra') || 'None'}
+
+MANDATORY RULES
+1. Use only the product facts explicitly present in the supplied Extractor Output. Do not browse for, assume, supplement or invent product information.
+2. Preserve the distinction between product features, included items, practical benefits, price and buyer suitability.
+3. Never invent or exaggerate specifications, results, compatibility, materials, contents, price, discounts, availability, shipping, warranties, guarantees, certifications, awards, ratings, reviews or testimonials.
+4. If a relevant detail is absent, do not guess. Omit it or mark it as “Not specified in the supplied product information” where necessary.
+5. Do not claim personal experience, testing or endorsement by the publisher unless explicitly supplied.
+6. Explain the product's actual purpose and the most relevant verified features in accessible language. Connect features to practical relevance without promising an outcome.
+7. Include a concise introduction, product overview, relevant features and benefits, who may find it useful (only where supported), and any important purchase considerations present in the source.
+8. Include a clear CTA that directs the visitor to the seller's product page using the exact affiliate link above. Do not modify, shorten or replace the link.
+9. Place the affiliate disclosure prominently and in plain language near the CTA. Do not hide it in tiny print or bury it in a footer.
+10. Add a brief note advising visitors to confirm current price, availability, shipping, returns and final details on the seller's website.
+11. Do not use fake urgency, pressure tactics, misleading comparisons or unsupported superlatives.
+12. Write in the selected language and keep the page appropriate for the product's likely audience.
+
+OUTPUT
+Return only the complete Bridge Page copy, ready for review and approval. Use clear section labels in the order they should appear on the page. Include the exact CTA destination and disclosure. Do not output HTML, CSS, JavaScript or explanations.`;
+}
+
+function buildPrompt2(){
+  return `Act as a senior front-end developer and mobile-first landing-page designer.
+
+YOUR MISSION
+Build a complete, polished, mobile-responsive, single-file HTML Bridge Page using the approved copy and exact affiliate link supplied below.
+
+APPROVED BRIDGE PAGE COPY — PRESERVE ITS FACTS AND MEANING
+${get('approvedCopy') || '[PASTE FINAL APPROVED BRIDGE PAGE COPY]'}
+
+AFFILIATE LINK — USE THIS EXACT URL
+${get('affiliate2') || '[PASTE AFFILIATE LINK]'}
+
+GENERATED PRODUCT IMAGE URL(S) — ONE URL PER LINE
+${get('imageUrls') || '[NO IMAGE URL SUPPLIED — OMIT THE IMAGE SECTION]'}
+
+PAGE SETTINGS
+Page title: ${get('pageTitle') || '[Derive a concise title from the approved copy without inventing facts]'}
+Affiliate button label: ${get('buttonLabel') || 'View Product Details'}
+Design style: ${get('designStyle')}
+Hosting context: ${get('hosting') || 'Standard static HTML hosting'}
+Additional requirements: ${get('htmlExtra') || 'None'}
+
+AFFILIATE DISCLOSURE — DISPLAY CLEARLY
+${get('disclosure2')}
+
+MANDATORY DEVELOPMENT REQUIREMENTS
+1. Return one complete HTML document beginning with <!DOCTYPE html>, including html, head and body.
+2. Put all CSS in one style element and all JavaScript, if needed, in one script element. Do not use external frameworks, libraries or dependencies.
+3. Include a responsive viewport meta tag, a meaningful page title, a concise factual meta description, and exactly this favicon reference: <link rel="icon" href="spm.ico">.
+4. Design mobile-first for phones, tablets and desktop. Ensure readable typography, accessible colour contrast, keyboard accessibility, visible focus states, comfortable tap targets and no horizontal overflow.
+5. Preserve the approved copy's meaning and factual boundaries. You may arrange it into attractive sections and make minor formatting improvements, but do not add product claims, features, prices, reviews, testimonials, ratings, guarantees, discounts or urgency that are not in the approved copy.
+6. The CTA must be a real anchor link using the exact affiliate URL supplied above. Do not alter, encode, shorten or replace it. Add target="_blank" and rel="sponsored nofollow noopener".
+7. Display the supplied affiliate disclosure clearly and prominently near the affiliate CTA, in readable text. Do not hide it in a footer, tooltip, modal or tiny print.
+8. Include a brief seller-check reminder: visitors should confirm current price, availability, shipping, returns and full details on the seller's website.
+9. PRODUCT IMAGE HANDLING — IMPORTANT:
+   a. The supplied image URL(s) are for finished product visual(s) created separately with the user's existing Product Visual Creation System™. Use only the exact URL(s) supplied. Do not browse for, generate, substitute, or invent images.
+   b. If exactly one valid image URL is supplied, display it as the main/hero product image in a balanced, responsive layout.
+   c. If multiple image URLs are supplied (one per line), preserve their order and display them in a clean, responsive product image gallery. Use a suitable grid or stacked layout on mobile.
+   d. If no image URL is supplied, omit the image section entirely and create a polished text-led page.
+   e. Use loading="lazy" for non-critical gallery images and appropriate responsive CSS. Write concise alt text using only product details and what can safely be described from the supplied context; do not infer hidden features from an image.
+   f. Do not alter the product depiction, add visual claims, or present decorative mockups as actual included product contents.
+10. Do not invent logos, brand identities, external links, analytics, tracking scripts, cookies, pop-ups, fake notifications or countdown timers.
+11. Use semantic HTML and clean, well-indented code. Escape text safely where needed. Ensure the page remains usable if JavaScript is disabled.
+12. Do not add any extra affiliate destinations or buttons.
+13. Do not include hidden content or deceptive interface patterns.
+
+FINAL VALIDATION
+Before returning the code, check that the affiliate URL is exactly unchanged, the disclosure is visible, the page is mobile-responsive, and every product statement is supported by the approved copy.
+
+OUTPUT RULE
+Return the complete HTML source code in ONE code block only. Do not add explanations or commentary before or after the code.`;
+}
+
+function buildPrompt3(){
+  return `Act as an ethical Facebook copywriter, product storyteller and affiliate-content specialist.
+
+YOUR MISSION
+Write a ready-to-publish Facebook post caption to accompany one or more finished product visuals created with the user's existing Product Visual Creation System™. The caption should create relevant interest, explain a genuine product detail and direct interested readers to the published Bridge Page.
+
+IMAGE ATTACHMENT INSTRUCTION
+The user may attach the finished product visual image(s) directly to this ChatGPT message along with this prompt. Examine every attached image to understand its visual composition, scene, visible product presentation and creative angle. If no image is attached, work from the product details and optional visual context below. Do not claim to have seen an image that is not attached.
+
+SOURCE OF TRUTH — PRODUCT DETAILS EXTRACTOR OUTPUT
+${get('extracted3') || '[PASTE COMPLETE PRODUCT DETAILS EXTRACTOR OUTPUT]'}
+
+PUBLISHED BRIDGE PAGE URL
+${get('bridgeUrl') || '[PASTE PUBLISHED BRIDGE PAGE URL]'}
+
+POST SETTINGS
+Language: ${get('postLanguage')}
+Caption style: ${get('postStyle')}
+Caption length: ${get('postLength')}
+CTA wording: ${get('postCTA') || 'Visit here for details'}
+Product Visual Creation System™ mode(s): ${get('visualModes') || 'Not specified'}
+Additional visual context: ${get('visualContext') || 'No written visual context supplied. Use attached image(s), if present.'}
+Affiliate disclosure:
+${get('disclosure3')}
+Additional instructions: ${get('postExtra') || 'None'}
+
+MANDATORY RULES
+1. Use the Product Details Extractor output as the only source of product facts. Do not conduct new research, guess or invent details.
+2. Preserve the distinction between features, included items, price and benefits. Mention only details relevant to the caption.
+3. Never invent discounts, availability, scarcity, performance claims, results, reviews, ratings, guarantees, awards or personal experience.
+4. Do not imply that the publisher has personally used, tested or endorsed the product unless the source explicitly confirms this.
+5. Write a natural opening hook appropriate to the selected style. Avoid clickbait, exaggerated promises and manipulative pressure.
+6. Keep the caption suitable for Facebook and the selected length. Make it easy to read on a mobile screen.
+7. Include a clear CTA using the supplied CTA wording and the exact published Bridge Page URL. Do not replace it with the affiliate link.
+8. Include the affiliate disclosure in the caption itself, in plain language and close to the CTA. Do not rely on hashtags or the Bridge Page disclosure as a substitute.
+9. Add a concise set of genuinely relevant hashtags. Avoid unrelated, misleading or excessive hashtags.
+10. Do not suggest that the product is suitable for everyone or guarantees a particular outcome.
+11. If a fact needed for a compelling caption is missing, write around it rather than making it up.
+12. Do not include a fake personal recommendation or fabricated customer story.
+13. Treat the Product Details Extractor output as the sole factual source. Attached images and written visual context are used only to understand the creative angle and visual presentation; they are not proof of product specifications, included contents, performance, price, results or benefits.
+14. Never infer a product feature, result, included item, price or claim from visual styling, labels, props, lifestyle scenes, before-and-after compositions or AI-generated imagery unless that fact is independently stated in the Product Details Extractor output.
+15. Make the caption feel naturally connected to the attached visual(s). If multiple images are attached, consider them as a set and avoid describing only one image unless that is clearly the intended post.
+16. If the image appears to show something inconsistent with or unsupported by the product details, do not repeat the unsupported visual claim. Keep the caption accurate and, if necessary, avoid mentioning that element.
+17. Do not ask the reader to click the image. The CTA must direct readers to the published Bridge Page URL.
+
+OUTPUT
+Create 3 distinct caption options with different opening hooks. Each option must be complete and ready to publish, including the caption, CTA with the exact Bridge Page URL, affiliate disclosure and hashtags. Make each option suitable for the supplied visual(s), without sacrificing factual accuracy. Then identify one as the recommended option.
+Return only the captions and the recommended selection.`;
+}
+
+const builders={1:buildPrompt1,2:buildPrompt2,3:buildPrompt3};
+
+function generatePrompt(n){
+  document.getElementById('output'+n).textContent=builders[n]();
+}
+function generateAll(){[1,2,3].forEach(generatePrompt);}
+async function copyPrompt(n,button){
+  const text=document.getElementById('output'+n).textContent;
+  if(!text || text==='Your generated prompt will appear here.'){
+    generatePrompt(n);
+  }
+  const finalText=document.getElementById('output'+n).textContent;
+  try{
+    await navigator.clipboard.writeText(finalText);
+  }catch(err){
+    const area=document.createElement('textarea');
+    area.value=finalText;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();
+  }
+  const old=button.textContent;button.textContent='Copied to Clipboard!';button.classList.add('copied');
+  setTimeout(()=>{button.textContent=old;button.classList.remove('copied')},1800);
+}
+function resetForm(){
+  if(!confirm('Reset all inputs and generated prompts?')) return;
+  document.querySelectorAll('input,textarea').forEach(el=>{
+    if(el.id==='disclosure') el.value='This page contains affiliate links. If you purchase through this link, I may earn a commission at no additional cost to you.';
+    else if(el.id==='disclosure2') el.value='This page contains affiliate links. If you purchase through this link, I may earn a commission at no additional cost to you.';
+    else if(el.id==='disclosure3') el.value='This post contains an affiliate link. I may earn a commission if you make a purchase through the link, at no additional cost to you.';
+    else if(el.id==='buttonLabel') el.value='View Product Details';
+    else if(el.id==='postCTA') el.value='Visit here for details';
+    else el.value='';
+  });
+  document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+  [1,2,3].forEach(n=>document.getElementById('output'+n).textContent='Your generated prompt will appear here.');
+}
+</script>
+</body>
+</html>
